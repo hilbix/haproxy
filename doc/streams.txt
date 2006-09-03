@@ -1,0 +1,27 @@
+Here is a description of stream buffers.
+
+A TCP proxy sees two unidirectional streams :
+  - one from the client to the server, called the REQUEST stream (req)
+  - one from the server to the client, called the RESPONSE stream (rsp)
+
+A stream is composed of :
+  - a producer
+  - a buffer
+  - a reader
+
+On the producer side, a stream buffer can :
+  - get informed that a new connection occured
+  - get informed that an end of session occured
+  - enable reading of data
+  - read data from the producer to the buffer
+  - pause reading of data
+  - time-out
+  - shut down reading
+
+
+
+/*
+ * Local variables:
+ *  fill-column: 79
+ * End:
+ */

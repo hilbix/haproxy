@@ -99,7 +99,7 @@ int buffer_replace(struct buffer *b, char *pos, char *end, const char *str)
 		return 0;  /* no space left */
 
 	/* first, protect the end of the buffer */
-	memmove(end + delta, end, b->data + b->l - end);
+	memmove(end + delta, end, b->r - end);
 
 	/* now, copy str over pos */
 	memcpy(pos, str,len);
@@ -133,7 +133,7 @@ int buffer_replace2(struct buffer *b, char *pos, char *end, const char *str, int
 	}
 
 	/* first, protect the end of the buffer */
-	memmove(end + delta, end, b->data + b->l - end);
+	memmove(end + delta, end, b->r - end);
 
 	/* now, copy str over pos */
 	if (len)
@@ -168,7 +168,7 @@ int buffer_insert_line2(struct buffer *b, char *pos, const char *str, int len)
 		return 0;  /* no space left */
 
 	/* first, protect the end of the buffer */
-	memmove(pos + delta, pos, b->data + b->l - pos);
+	memmove(pos + delta, pos, b->r - pos);
 
 	/* now, copy str over pos */
 	if (len && str) {

@@ -123,6 +123,8 @@ int proxy_parse_timeout(const char **args, struct proxy *proxy,
 		td = &defpx->timeout.check;
 		cap = PR_CAP_BE;
 	} else if (!strcmp(args[0], "appsession")) {
+		snprintf(err, errlen, "undocumented 'timeout appsession' may not do what you think and will be removed in next version");
+		retval = 1;
 		tv = &proxy->timeout.appsession;
 		td = &defpx->timeout.appsession;
 		cap = PR_CAP_BE;

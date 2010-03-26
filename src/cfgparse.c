@@ -1761,7 +1761,7 @@ int cfg_parse_listen(const char *file, int linenum, char **args, int inv)
 					      file, linenum, *err, newsrv->id);
 					return -1;
 				}
-				if (val <= 0) {
+				if (val < 0) {
 					Alert("parsing [%s:%d]: invalid value %d for argument '%s' of server %s.\n",
 					      file, linenum, val, args[cur_arg], newsrv->id);
 					return -1;

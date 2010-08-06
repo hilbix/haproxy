@@ -89,7 +89,8 @@ void process_srv_queue(struct server *s)
  * returned. Note that neither <srv> nor <px> may be NULL.
  * Priority is given to the oldest request in the queue if both <srv> and <px>
  * have pending requests. This ensures that no request will be left unserved.
- * The <px> queue is not considered if the server is not RUNNING. The <srv>
+ * The <px> queue is not considered if the server (or a tracked server) is not
+ * RUNNING, is disabled, or has a null weight (server going down). The <srv>
  * queue is still considered in this case, because if some connections remain
  * there, it means that some requests have been forced there after it was seen
  * down (eg: due to option persist).
@@ -100,11 +101,16 @@ struct session *pendconn_get_next_sess(struct server *srv, struct proxy *px)
 {
 	struct pendconn *ps, *pp;
 	struct session *sess;
+	struct server *rsrv;
+
+	rsrv = srv->tracked;
+	if (!rsrv)
+		rsrv = srv;
 
 	ps = pendconn_from_srv(srv);
 	pp = pendconn_from_px(px);
 	/* we want to get the definitive pendconn in <ps> */
-	if (!pp || !(srv->state & SRV_RUNNING)) {
+	if (!pp || !(rsrv->state & SRV_RUNNING) || (rsrv->state & SRV_GOINGDOWN)) {
 		if (!ps)
 			return NULL;
 	} else {

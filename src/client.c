@@ -1,7 +1,7 @@
 /*
  * Client-side variables and functions.
  *
- * Copyright 2000-2008 Willy Tarreau <w@1wt.eu>
+ * Copyright 2000-2010 Willy Tarreau <w@1wt.eu>
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -32,6 +32,7 @@
 #include <proto/fd.h>
 #include <proto/log.h>
 #include <proto/hdr_idx.h>
+#include <proto/protocols.h>
 #include <proto/proto_http.h>
 #include <proto/proxy.h>
 #include <proto/session.h>
@@ -109,7 +110,7 @@ int event_accept(int fd) {
 
 		if ((s = pool_alloc2(pool2_session)) == NULL) { /* disable this proxy for a while */
 			Alert("out of memory in event_accept().\n");
-			EV_FD_CLR(fd, DIR_RD);
+			disable_listener(l);
 			p->state = PR_STIDLE;
 			goto out_close;
 		}
@@ -137,7 +138,7 @@ int event_accept(int fd) {
 
 		if ((t = task_new()) == NULL) { /* disable this proxy for a while */
 			Alert("out of memory in event_accept().\n");
-			EV_FD_CLR(fd, DIR_RD);
+			disable_listener(l);
 			p->state = PR_STIDLE;
 			goto out_free_session;
 		}

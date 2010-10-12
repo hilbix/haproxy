@@ -702,6 +702,7 @@ errorloc303                 X          X         X         X
 fullconn                    X          -         X         X
 grace                       X          X         X         X
 http-check disable-on-404   X          -         X         X
+http-check send-state       X          -         X         X
 log                         X          X         X         X
 maxconn                     X          X         X         -
 mode                        X          X         X         X

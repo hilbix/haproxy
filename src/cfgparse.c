@@ -888,10 +888,11 @@ int cfg_parse_listen(const char *file, int linenum, char **args, int inv)
 			return -1;
 		}
 
+		curproxy->options &= ~PR_O_COOK_ANY;
 		free(curproxy->cookie_domain); curproxy->cookie_domain = NULL;
 		curproxy->cookie_name = strdup(args[1]);
 		curproxy->cookie_len = strlen(curproxy->cookie_name);
-	
+
 		cur_arg = 2;
 		while (*(args[cur_arg])) {
 			if (!strcmp(args[cur_arg], "rewrite")) {

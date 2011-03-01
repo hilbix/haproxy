@@ -2316,8 +2316,7 @@ int http_process_request(struct session *s, struct buffer *req)
 	 */
 	if (!(s->flags & (SN_ASSIGNED|SN_DIRECT)) &&
 	    s->txn.meth == HTTP_METH_POST && s->be->url_param_name != NULL &&
-	    s->be->url_param_post_limit != 0 && !(req->flags & BF_FULL) &&
-	    memchr(msg->sol + msg->sl.rq.u, '?', msg->sl.rq.u_l) == NULL) {
+	    s->be->url_param_post_limit != 0 && !(req->flags & BF_FULL)) {
 		/* are there enough bytes here? total == l || r || rlim ?
 		 * len is unsigned, but eoh is int,
 		 * how many bytes of body have we received?

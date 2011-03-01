@@ -1382,14 +1382,13 @@ int assign_server(struct session *s)
 			break;
 		case BE_LB_ALGO_PH:
 			/* URL Parameter hashing */
-			if (s->txn.meth == HTTP_METH_POST &&
-			    memchr(s->txn.req.sol + s->txn.req.sl.rq.u, '&',
-				   s->txn.req.sl.rq.u_l ) == NULL)
+			s->srv = get_server_ph(s->be,
+					       s->txn.req.sol + s->txn.req.sl.rq.u,
+					       s->txn.req.sl.rq.u_l);
+
+			if (!s->srv && s->txn.meth == HTTP_METH_POST &&
+			    s->txn.req.msg_state >= HTTP_MSG_BODY)
 				s->srv = get_server_ph_post(s);
-			else
-				s->srv = get_server_ph(s->be,
-						       s->txn.req.sol + s->txn.req.sl.rq.u,
-						       s->txn.req.sl.rq.u_l);
 
 			if (!s->srv) {
 				/* parameter not found, fall back to round robin on the map */

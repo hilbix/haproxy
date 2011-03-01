@@ -2079,8 +2079,7 @@ int process_cli(struct session *t)
                  */
 		if (!(t->flags & (SN_ASSIGNED|SN_DIRECT)) &&
 		     t->txn.meth == HTTP_METH_POST && t->be->url_param_name != NULL &&
-		     t->be->url_param_post_limit != 0 && req->l < BUFSIZE &&
-		     memchr(msg->sol + msg->sl.rq.u, '?', msg->sl.rq.u_l) == NULL) {
+		     t->be->url_param_post_limit != 0 && req->l < BUFSIZE) {
 			/* are there enough bytes here? total == l || r || rlim ?
 			 * len is unsigned, but eoh is int,
 			 * how many bytes of body have we received?

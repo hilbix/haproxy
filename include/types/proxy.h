@@ -120,8 +120,14 @@
 /* 0x80..0x800 already used in 1.4 */
 #define PR_O2_INDEPSTR	0x00001000	/* independant streams, don't update rex on write */
 /* 0x2000 used in 1.4 */
-#define PR_O2_AS_REQL	0x00004000      /* appsession: learn the session id from the request */
-/* 0x8000 to 0x40000 used in 1.4 */
+/* appsession */
+#define PR_O2_AS_REQL	0x00004000      /* learn the session id from the request */
+#define PR_O2_AS_PFX	0x00008000      /* match on the cookie prefix */
+/* Encoding of appsession cookie matching modes : 2 possible values => 1 bit */
+#define PR_O2_AS_M_PP	0x00000000      /* path-parameters mode (the default mode) */
+#define PR_O2_AS_M_QS	0x00010000      /* query-string mode */
+#define PR_O2_AS_M_ANY	0x00010000      /* mask covering all PR_O2_AS_M_* values */
+/* 0x20000 to 0x40000 used in 1.4 */
 #define PR_O2_CHK_SNDST 0x00080000      /* send the state of each server along with HTTP health checks */
 /* end of proxy->options2 */
 

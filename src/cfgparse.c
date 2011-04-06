@@ -875,12 +875,18 @@ int cfg_parse_listen(const char *file, int linenum, char **args, int inv)
 
 		/* parse the listener address if any */
 		if ((curproxy->cap & PR_CAP_FE) && *args[2]) {
+			struct listener *new, *last = curproxy->listen;
 			curproxy->listen = str2listener(args[2], curproxy->listen);
 			if (!curproxy->listen) {
 				err_code |= ERR_FATAL;
 				goto out;
 			}
-			global.maxsock++;
+
+			new = curproxy->listen;
+			while (new != last) {
+				new = new->next;
+				global.maxsock++;
+			}
 		}
 
 		/* set default values */
@@ -1029,6 +1035,7 @@ int cfg_parse_listen(const char *file, int linenum, char **args, int inv)
 	/* Now let's parse the proxy-specific keywords */
 	if (!strcmp(args[0], "bind")) {  /* new listen addresses */
 		struct listener *last_listen;
+		struct listener *new_listen;
 		int cur_arg;
 
 		if (curproxy == &defproxy) {
@@ -1051,6 +1058,12 @@ int cfg_parse_listen(const char *file, int linenum, char **args, int inv)
 		if (!curproxy->listen) {
 			err_code |= ERR_ALERT | ERR_FATAL;
 			goto out;
+		}
+
+		new_listen = curproxy->listen;
+		while (new_listen != last_listen) {
+			new_listen = new_listen->next;
+			global.maxsock++;
 		}
 
 		cur_arg = 2;
@@ -1101,7 +1114,6 @@ int cfg_parse_listen(const char *file, int linenum, char **args, int inv)
 			err_code |= ERR_ALERT | ERR_FATAL;
 			goto out;
 		}
-		global.maxsock++;
 		goto out;
 	}
 	else if (!strcmp(args[0], "monitor-net")) {  /* set the range of IPs to ignore */

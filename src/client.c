@@ -40,6 +40,7 @@
 #include <proto/fd.h>
 #include <proto/log.h>
 #include <proto/hdr_idx.h>
+#include <proto/protocols.h>
 #include <proto/proto_http.h>
 #include <proto/session.h>
 #include <proto/stream_sock.h>
@@ -109,7 +110,7 @@ int event_accept(int fd) {
 
 		if ((s = pool_alloc2(pool2_session)) == NULL) { /* disable this proxy for a while */
 			Alert("out of memory in event_accept().\n");
-			EV_FD_CLR(fd, DIR_RD);
+			disable_listener(l);
 			p->state = PR_STIDLE;
 			goto out_close;
 		}
@@ -131,7 +132,7 @@ int event_accept(int fd) {
 
 		if ((t = pool_alloc2(pool2_task)) == NULL) { /* disable this proxy for a while */
 			Alert("out of memory in event_accept().\n");
-			EV_FD_CLR(fd, DIR_RD);
+			disable_listener(l);
 			p->state = PR_STIDLE;
 			goto out_free_session;
 		}

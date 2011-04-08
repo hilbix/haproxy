@@ -525,7 +525,11 @@ void init(int argc, char **argv)
 	if (!cfg_cfgfile)
 		usage(old_argv);
 
-	gethostname(hostname, MAX_HOSTNAME_LEN);
+	/* NB: POSIX does not make it mandatory for gethostname() to NULL-terminate
+	 * the string in case of truncation, and at least FreeBSD appears not to do
+	 * it.
+	 */
+	gethostname(hostname, sizeof(hostname) - 1);
 
 	have_appsession = 0;
 	global.maxsock = 10; /* reserve 10 fds ; will be incremented by socket eaters */

@@ -79,7 +79,7 @@ extern int strlcpy2(char *dst, const char *src, int size);
  * the ascii representation for number 'n' in decimal.
  */
 extern char itoa_str[][21];
-extern const char *ultoa_r(unsigned long n, char *buffer, int size);
+extern char *ultoa_r(unsigned long n, char *buffer, int size);
 static inline const char *ultoa(unsigned long n)
 {
 	return ultoa_r(n, itoa_str[0], sizeof(itoa_str[0]));

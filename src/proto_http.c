@@ -2613,6 +2613,12 @@ int process_srv(struct session *t)
 					memcpy(rdr.str + rdr.len, t->srv->rdr_pfx, t->srv->rdr_len);
 					rdr.len += t->srv->rdr_len;
 
+					/* special prefix "/" means don't change URL */
+					if (t->srv->rdr_len != 1 || *t->srv->rdr_pfx != '/') {
+						memcpy(rdr.str + rdr.len, t->srv->rdr_pfx, t->srv->rdr_len);
+						rdr.len += t->srv->rdr_len;
+					}
+
 					/* 3: add the request URI */
 					path = http_get_path(txn);
 					if (!path)

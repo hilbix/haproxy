@@ -2911,7 +2911,7 @@ int readcfgfile(const char *file)
 		if (curproxy->defbe.name) {
 			struct proxy *target;
 
-			target = findproxy(curproxy->defbe.name, curproxy->mode, PR_CAP_BE);
+			target = findproxy_mode(curproxy->defbe.name, curproxy->mode, PR_CAP_BE);
 			if (!target) {
 				Alert("Proxy '%s': unable to find required default_backend: '%s'.\n",
 					curproxy->id, curproxy->defbe.name);
@@ -2935,7 +2935,7 @@ int readcfgfile(const char *file)
 				if (exp->action != ACT_SETBE)
 					continue;
 
-				target = findproxy(exp->replace, PR_MODE_HTTP, PR_CAP_BE);
+				target = findproxy_mode(exp->replace, PR_MODE_HTTP, PR_CAP_BE);
 				if (!target) {
 					Alert("Proxy '%s': unable to find required setbe: '%s'.\n",
 						curproxy->id, exp->replace);
@@ -2955,7 +2955,7 @@ int readcfgfile(const char *file)
 		list_for_each_entry(rule, &curproxy->switching_rules, list) {
 			struct proxy *target;
 
-			target = findproxy(rule->be.name, curproxy->mode, PR_CAP_BE);
+			target = findproxy_mode(rule->be.name, curproxy->mode, PR_CAP_BE);
 
 			if (!target) {
 				Alert("Proxy '%s': unable to find required use_backend: '%s'.\n",
@@ -3119,7 +3119,7 @@ int readcfgfile(const char *file)
 				}
 
 				if (pname) {
-					px = findproxy(pname, curproxy->mode, PR_CAP_BE);
+					px = findproxy(pname, PR_CAP_BE);
 					if (!px) {
 						Alert("parsing %s, %s '%s', server '%s': unable to find required proxy '%s' for tracking.\n",
 							file, proxy_type_str(curproxy), curproxy->id,
@@ -3139,7 +3139,7 @@ int readcfgfile(const char *file)
 
 				if (!(srv->state & SRV_CHECKED)) {
 					Alert("parsing %s, %s '%s', server '%s': unable to use %s/%s for "
-						"tracing as it does not have checks enabled.\n",
+						"tracking as it does not have checks enabled.\n",
 						file, proxy_type_str(curproxy), curproxy->id,
 						newsrv->id, px->id, srv->id);
 					return -1;

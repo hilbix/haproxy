@@ -2052,7 +2052,7 @@ int process_cli(struct session *t)
 					  pn, sizeof(pn));
 				len = sprintf(trash, "X-Forwarded-For: %s", pn);
 				if (unlikely(http_header_add_tail2(req, &txn->req,
-								   &txn->hdr_idx, trash, len)) < 0)
+								   &txn->hdr_idx, trash, len) < 0))
 					goto return_bad_req;
 			}
 		}
@@ -2066,7 +2066,7 @@ int process_cli(struct session *t)
 			if ((unlikely(msg->sl.rq.v_l != 8) ||
 			     unlikely(req->data[msg->som + msg->sl.rq.v + 7] != '0')) &&
 			    unlikely(http_header_add_tail2(req, &txn->req, &txn->hdr_idx,
-							   "Connection: close", 17)) < 0)
+							   "Connection: close", 17) < 0))
 				goto return_bad_req;
 			t->flags |= SN_CONN_CLOSED;
 		}
@@ -3180,7 +3180,7 @@ int process_srv(struct session *t)
 			/* add response headers from the rule sets in the same order */
 			for (cur_idx = 0; cur_idx < rule_set->nb_rspadd; cur_idx++) {
 				if (unlikely(http_header_add_tail(rep, &txn->rsp, &txn->hdr_idx,
-								  rule_set->rsp_add[cur_idx])) < 0)
+								  rule_set->rsp_add[cur_idx]) < 0))
 					goto return_bad_resp;
 			}
 
@@ -3224,7 +3224,7 @@ int process_srv(struct session *t)
 				len += sprintf(trash+len, "; domain=%s", t->be->cookie_domain);
 
 			if (unlikely(http_header_add_tail2(rep, &txn->rsp, &txn->hdr_idx,
-							   trash, len)) < 0)
+							   trash, len) < 0))
 				goto return_bad_resp;
 			txn->flags |= TX_SCK_INSERTED;
 
@@ -3238,7 +3238,7 @@ int process_srv(struct session *t)
 				txn->flags &= ~TX_CACHEABLE & ~TX_CACHE_COOK;
 
 				if (unlikely(http_header_add_tail2(rep, &txn->rsp, &txn->hdr_idx,
-								   "Cache-control: private", 22)) < 0)
+								   "Cache-control: private", 22) < 0))
 					goto return_bad_resp;
 			}
 		}
@@ -3281,7 +3281,7 @@ int process_srv(struct session *t)
 			if ((unlikely(msg->sl.st.v_l != 8) ||
 			     unlikely(req->data[msg->som + 7] != '0')) &&
 			    unlikely(http_header_add_tail2(rep, &txn->rsp, &txn->hdr_idx,
-							   "Connection: close", 17)) < 0)
+							   "Connection: close", 17) < 0))
 				goto return_bad_resp;
 			t->flags |= SN_CONN_CLOSED;
 		}

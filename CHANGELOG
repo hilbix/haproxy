@@ -1,6 +1,47 @@
 ChangeLog :
 ===========
 
+2011/08/05 : 1.3.15.13
+    - [MINOR] cfgparse: Check whether the path given for the stats socket actually fits into the sockaddr_un structure to avoid truncation.
+    - [BUG] Configuration parser bug when escaping characters
+    - [BUG] cttproxy: socket fd leakage in check_cttproxy_version
+    - [MINOR] server tracking: don't care about the tracked server's mode
+    - [BUG] config: fix erroneous check on cookie domain names, again
+    - [BUG] check_post: limit analysis to the buffer length
+    - [MINOR] http: typos on several unlikely() around header insertion
+    - [CLEANUP] buffers: wrong size calculation for displaced data
+    - [MINOR] config: option forceclose is valid in frontends too
+    - [BUILD] warning ultoa_r returns char *
+    - [MINOR] http: fix double slash prefix with server redirect
+    - [MINOR] config: indicate that timeout appsession should not be used
+    - [MINOR] config: fix too large ssl-hello-check message.
+    - [BUG] config: reset check request to avoid double free when switching to ssl
+    - [DOC] fix a typo about timeout check and clarify the explanation.
+    - [BUG] url_param hash may return a down server
+    - [MINOR] force null-termination of hostname
+    - [BUG] init: unconditionally catch SIGPIPE
+    - [MINOR] config: allow "slowstart 0s"
+    - [BUG] stream_sock: cleanly disable the listener in case of resource shortage
+    - [BUG] queue: don't dequeue proxy-global requests on disabled servers
+    - [MEDIUM] servers: support address 0.0.0.0 as the original destination address
+    - [BUG] http: don't consider commas as a header delimitor within quotes
+    - [BUG] http: correctly update the header list when removing two consecutive headers
+    - [BUG] checks: don't log backend down for all zero-weight servers
+    - [BUG] cookie: correctly unset default cookie parameters
+    - [BUG] startup: set the rlimits before binding ports, not after.
+    - [MINOR] config: fix endianness of server check port
+    - [DOC] fix description of cookie "insert" and "indirect" modes
+    - [DOC] fix minor typos in the doc
+    - [DOC] fix minor typo in "usesrc"
+    - [BUG] http: balance url_param did not work with first parameters on POST
+    - [DOC] document the "dispatch" keyword
+    - [DOC] fix minor typo in the "dispatch" doc
+    - [BUILD] fix some build warnings on Solaris with is* macros
+    - [CLEANUP] report 2011 and not 2009 in the copyright banner.
+
+2009/12/30 : 1.3.15.12
+    - [BUG] http: fix cookie parser to support spaces and commas in values
+
 2009/12/04 : 1.3.15.11
     - [MINOR] Allow to specify a domain for a cookie
     - [BUG/CLEANUP] cookiedomain -> cookie_domain rename + free(p->cookie_domain)

@@ -168,7 +168,7 @@ const char *invalid_char(const char *name)
 		return name;
 
 	while (*name) {
-		if (!isalnum((int)*name) && *name != '.' && *name != ':' &&
+		if (!isalnum((int)(unsigned char)*name) && *name != '.' && *name != ':' &&
 		    *name != '_' && *name != '-')
 			return name;
 		name++;
@@ -187,7 +187,7 @@ const char *invalid_domainchar(const char *name) {
 		return name;
 
 	while (*name) {
-		if (!isalnum((int)*name) && *name != '.' &&
+		if (!isalnum((int)(unsigned char)*name) && *name != '.' &&
 		    *name != '_' && *name != '-')
 			return name;
 

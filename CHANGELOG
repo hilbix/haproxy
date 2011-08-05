@@ -1,6 +1,43 @@
 ChangeLog :
 ===========
 
+2011/08/05 : 1.3.26
+    - [MINOR] cfgparse: Check whether the path given for the stats socket actually fits into the sockaddr_un structure to avoid truncation.
+    - [DOC] fix a minor typo
+    - [BUG] stream_sock: cleanly disable the listener in case of resource shortage
+    - [BUG] queue: don't dequeue proxy-global requests on disabled servers
+    - [MEDIUM] servers: support address 0.0.0.0 as the original destination address
+    - [MEDIUM] tcp-request : don't wait for inspect-delay to expire when the buffer is full
+    - [BUG] http: don't consider commas as a header delimitor within quotes
+    - [DOC] fix typo in the queue() definition (backend, not frontend)
+    - [DOC] fix typo in the avg_queue() and be_conn() definition (backend, not frontend)
+    - [DOC] fix description of cookie "insert" and "indirect" modes
+    - [MINOR] http: keep pointer to beginning of data
+    - [MEDIUM] appsession: add "len", "prefix" and "mode" options
+    - [MEDIUM] http: fix space handling in the request cookie parser
+    - [MEDIUM] http: fix space handling in the response cookie parser
+    - [BUG] checks: don't log backend down for all zero-weight servers
+    - [DOC] fix typos about bind-process syntax
+    - [BUG] cookie: correctly unset default cookie parameters
+    - [DOC] missing index entry for http-check send-state
+    - [BUG] config: report the correct proxy type in tcp-request errors
+    - [BUG] capture: do not capture a cookie if there is no memory left
+    - [BUG] appsession: fix possible double free in case of out of memory
+    - [CRITICAL] cookies: mixing cookies in indirect mode and appsession can crash the process
+    - [BUG] http: correctly update the header list when removing two consecutive headers
+    - [DOC] fix minor typos in the doc
+    - [BUG] session: release slot before processing pending connections
+    - [BUG] cfgparse: correctly count one socket per port in ranges
+    - [BUG] startup: set the rlimits before binding ports, not after.
+    - [DOC] fix minor typo in "usesrc"
+    - [BUG] http: balance url_param did not work with first parameters on POST
+    - [TESTS] update the url_param regression test to test check_post too
+    - [MINOR] config: fix endianness of server check port
+    - [DOC] fix minor typo in the "dispatch" doc
+    - [BUG] halog: correctly handle truncated last line
+    - [BUILD] fix some build warnings on Solaris with is* macros
+    - [CLEANUP] report 2011 and not 2009 in the copyright banner.
+
 2010/06/16 : 1.3.25
     - [BUG] appsession should match the whole cookie name
     - [BUG] cttproxy: socket fd leakage in check_cttproxy_version

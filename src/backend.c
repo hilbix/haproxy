@@ -52,20 +52,6 @@ static inline void fwrr_dequeue_srv(struct server *s);
 static void fwrr_get_srv(struct server *s);
 static void fwrr_queue_srv(struct server *s);
 
-/* This function returns non-zero if a server with the given weight and state
- * is usable for LB, otherwise zero.
- */
-static inline int srv_is_usable(int state, int weight)
-{
-	if (!weight)
-		return 0;
-	if (state & SRV_GOINGDOWN)
-		return 0;
-	if (!(state & SRV_RUNNING))
-		return 0;
-	return 1;
-}
-
 /*
  * This function recounts the number of usable active and backup servers for
  * proxy <p>. These numbers are returned into the p->srv_act and p->srv_bck.
